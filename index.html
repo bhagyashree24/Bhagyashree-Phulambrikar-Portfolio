@@ -1,11 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhagyashree Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Automotive Embedded portfolio: ESP32 ADAS, connectivity, sensing, and camera projects with demo videos.">
+  <title>Automotive Embedded | Project Videos</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --accent-2: #22d3ee;
+      --ok: #34d399;
+      --border: #374151;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: radial-gradient(circle at top right, #1e293b 0%, var(--bg) 45%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .hero {
+      background: linear-gradient(140deg, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 0.8));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 900px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.86rem;
+      color: #d1d5db;
+      background: rgba(31, 41, 55, 0.7);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 12px 0 18px;
+    }
+
+    button.filter {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: 120ms ease;
+    }
+
+    button.filter:hover,
+    button.filter[aria-pressed="true"] {
+      border-color: var(--accent);
+      color: var(--accent-2);
+      transform: translateY(-1px);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    article.card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(160deg, var(--panel), var(--panel-2));
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 295px;
+    }
+
+    .phase {
+      font-size: 0.76rem;
+      color: var(--ok);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.06rem;
+    }
+
+    .desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+      flex: 1;
+    }
+
+    .path {
+      margin: 0;
+      font-family: Consolas, monospace;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 6px 8px;
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid #0ea5e9;
+      color: #e0f2fe;
+      background: rgba(14, 165, 233, 0.14);
+      border-radius: 9px;
+      padding: 7px 10px;
+      text-decoration: none;
+      font-size: 0.86rem;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn.secondary {
+      border-color: #475569;
+      color: #cbd5e1;
+      background: rgba(30, 41, 59, 0.7);
+    }
+
+    .empty {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .video-modal {
+      border: none;
+      border-radius: 12px;
+      width: min(1000px, 92vw);
+      padding: 0;
+      background: #020617;
+      color: var(--text);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .video-modal::backdrop {
+      background: rgba(0, 0, 0, 0.72);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #1e293b;
+      padding: 12px 14px;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .close-btn {
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 9px;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+
+    .player-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .player-wrap iframe,
+    .player-wrap video {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .modal-foot {
+      padding: 11px 14px;
+      font-size: 0.86rem;
+      color: var(--muted);
+      border-top: 1px solid #1e293b;
+    }
+
+    a {
+      color: var(--accent-2);
+    }
+  </style>
 </head>
 <body>
-    <h1>My Portfolio is working!</h1>
+  <div class="container">
+    <header class="hero">
+      <h1>Automotive Embedded Project Videos</h1>
+      <p>
+        ESP32 firmware portfolio for ADAS learning, connectivity, sensing, and camera workflows.
+        This page is GitHub Pages ready and built to showcase demo videos for each project.
+      </p>
+      <div class="meta">
+        <span class="chip">ESP32 DevKit V1</span>
+        <span class="chip">Edgehax S3-PRO</span>
+        <span class="chip">ESP32-CAM</span>
+        <span class="chip">MQTT + OTA + Dashboard</span>
+      </div>
+    </header>
+
+    <section class="toolbar" id="phaseFilters" aria-label="Phase filters"></section>
+    <section class="grid" id="cards"></section>
+    <p class="empty" id="emptyState" hidden>No projects match this filter.</p>
+  </div>
+
+  <dialog id="videoModal" class="video-modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">Video</h2>
+      <button class="close-btn" id="closeModal" type="button">Close</button>
+    </div>
+    <div id="playerHost" class="player-wrap"></div>
+    <div class="modal-foot" id="modalFooter">Press Esc to close.</div>
+  </dialog>
+
+  <script>
+    // Replace placeholder links with your real YouTube/mp4 links.
+    // Supports:
+    // - YouTube full URL (https://www.youtube.com/watch?v=...)
+    // - YouTube short URL (https://youtu.be/...)
+    // - Local mp4 in docs/ (example: ./videos/my-demo.mp4)
+    const projects = [
+      {
+        phase: "00 — Bring-up",
+        name: "ESP32 Blink + Serial Bring-up",
+        description: "First flash, serial sanity check, and board validation before integration.",
+        path: "sketches/00-bringup/sketch_ESP32_BlinkOnly/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_00",
+        repoLink: "../sketches/00-bringup/README.md"
+      },
+      {
+        phase: "01 — Actuation",
+        name: "L298N Motor + Buzzer Control",
+        description: "Motor drive tests and basic chassis actuation for early ADAS behavior.",
+        path: "sketches/01-actuation/sketch_L298N_MotorTest/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_01",
+        repoLink: "../sketches/01-actuation/README.md"
+      },
+      {
+        phase: "02 — Sensing",
+        name: "Radar + Ultrasonic Sensing",
+        description: "Collision-sensing experiments using RCWL radar and ultrasonic sensors.",
+        path: "sketches/02-sensing/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_02",
+        repoLink: "../sketches/02-sensing/README.md"
+      },
+      {
+        phase: "03 — Connectivity",
+        name: "WiFi + MQTT + OTA Bench Tests",
+        description: "Network telemetry, MQTT messaging, and OTA verification on bench setup.",
+        path: "sketches/03-connectivity/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_03",
+        repoLink: "../sketches/03-connectivity/README.md"
+      },
+      {
+        phase: "04 — ADAS",
+        name: "ADAS OTA Integration",
+        description: "Main ADAS firmware with telemetry, AEB logic, and OTA deployment path.",
+        path: "sketches/04-adas/sketch_ADAS_OTA/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_04",
+        repoLink: "../sketches/04-adas/README.md"
+      },
+      {
+        phase: "05 — Camera",
+        name: "ESP32-CAM LDW + TSR",
+        description: "Camera-assisted lane and traffic-sign experiments integrated with ESP32 stack.",
+        path: "sketches/05-camera/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_05",
+        repoLink: "../sketches/05-camera/README.md"
+      },
+      {
+        phase: "Dashboard",
+        name: "ADAS Streamlit Dashboard",
+        description: "Live monitor dashboard consuming MQTT data from the ADAS firmware.",
+        path: "dashboard/",
+        videoUrl: "REPLACE_WITH_VIDEO_URL_DASHBOARD",
+        repoLink: "../dashboard/README.md"
+      }
+    ];
+
+    const cards = document.getElementById("cards");
+    const filters = document.getElementById("phaseFilters");
+    const emptyState = document.getElementById("emptyState");
+    const modal = document.getElementById("videoModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const playerHost = document.getElementById("playerHost");
+    const modalFooter = document.getElementById("modalFooter");
+    const closeModal = document.getElementById("closeModal");
+
+    const phaseList = ["All", ...new Set(projects.map((p) => p.phase))];
+    let currentPhase = "All";
+
+    function normalizeYouTubeUrl(url) {
+      try {
+        const u = new URL(url);
+        if (u.hostname.includes("youtu.be")) {
+          const id = u.pathname.replace("/", "");
+          return `https://www.youtube.com/embed/${id}`;
+        }
+        if (u.hostname.includes("youtube.com")) {
+          const id = u.searchParams.get("v");
+          if (id) return `https://www.youtube.com/embed/${id}`;
+          if (u.pathname.startsWith("/embed/")) return url;
+        }
+      } catch (err) {
+        return null;
+      }
+      return null;
+    }
+
+    function hasVideo(url) {
+      return url && !url.startsWith("REPLACE_WITH_VIDEO_URL");
+    }
+
+    function createPlayer(url) {
+      const yt = normalizeYouTubeUrl(url);
+      if (yt) {
+        const iframe = document.createElement("iframe");
+        iframe.src = yt;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.allowFullscreen = true;
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        return iframe;
+      }
+
+      const lower = (url || "").toLowerCase();
+      if (lower.endsWith(".mp4") || lower.endsWith(".webm")) {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        return video;
+      }
+      return null;
+    }
+
+    function openVideo(project) {
+      if (!hasVideo(project.videoUrl)) return;
+      const player = createPlayer(project.videoUrl);
+      if (!player) {
+        modalFooter.textContent = "Unsupported video URL. Use YouTube links or .mp4/.webm paths.";
+        return;
+      }
+      modalTitle.textContent = project.name;
+      modalFooter.innerHTML = `Source: <a href="${project.videoUrl}" target="_blank" rel="noreferrer">open video link</a>`;
+      playerHost.replaceChildren(player);
+      modal.showModal();
+    }
+
+    function renderFilters() {
+      filters.replaceChildren();
+      phaseList.forEach((phase) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "filter";
+        btn.textContent = phase;
+        btn.setAttribute("aria-pressed", String(currentPhase === phase));
+        btn.addEventListener("click", () => {
+          currentPhase = phase;
+          renderFilters();
+          renderCards();
+        });
+        filters.appendChild(btn);
+      });
+    }
+
+    function renderCards() {
+      const list = currentPhase === "All"
+        ? projects
+        : projects.filter((p) => p.phase === currentPhase);
+
+      cards.replaceChildren();
+      emptyState.hidden = list.length > 0;
+
+      list.forEach((project) => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const videoReady = hasVideo(project.videoUrl);
+        card.innerHTML = `
+          <span class="phase">${project.phase}</span>
+          <h3 class="title">${project.name}</h3>
+          <p class="desc">${project.description}</p>
+          <p class="path">${project.path}</p>
+          <div class="actions">
+            <button type="button" class="btn play-btn" ${videoReady ? "" : "disabled"} title="${videoReady ? "Open project video" : "Set videoUrl in docs/index.html"}">
+              ${videoReady ? "Play Video" : "Add Video URL"}
+            </button>
+            <a class="btn secondary" href="${project.repoLink}" target="_blank" rel="noreferrer">Open Docs</a>
+          </div>
+        `;
+
+        card.querySelector(".play-btn").addEventListener("click", () => openVideo(project));
+        cards.appendChild(card);
+      });
+    }
+
+    closeModal.addEventListener("click", () => {
+      modal.close();
+      playerHost.replaceChildren();
+      modalFooter.textContent = "Press Esc to close.";
+    });
+
+    modal.addEventListener("close", () => {
+      playerHost.replaceChildren();
+      modalFooter.textContent = "Press Esc to close.";
+    });
+
+    renderFilters();
+    renderCards();
+  </script>
 </body>
 </html>
