@@ -110,7 +110,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 295px;
+      min-height: 260px;
     }
 
     .phase {
@@ -150,24 +150,37 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      margin-top: auto;
     }
 
     .btn {
       border: 1px solid #0ea5e9;
       color: #e0f2fe;
       background: rgba(14, 165, 233, 0.14);
-      border-radius: 9px;
-      padding: 7px 10px;
+      border-radius: 999px;
+      padding: 8px 16px;
       text-decoration: none;
       font-size: 0.86rem;
+      font-weight: 500;
       cursor: pointer;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 150ms ease;
+    }
+
+    .btn:hover {
+      background: rgba(14, 165, 233, 0.28);
     }
 
     .btn.secondary {
       border-color: #475569;
       color: #cbd5e1;
       background: rgba(30, 41, 59, 0.7);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(51, 65, 85, 0.9);
     }
 
     .empty {
@@ -270,25 +283,23 @@
   </dialog>
 
   <script>
-    // Replace placeholder links with your real YouTube/mp4 links.
-    // Supports:
-    // - YouTube full URL (https://www.youtube.com/watch?v=...)
-    // - YouTube short URL (https://youtu.be/...)
-    // - Local mp4 in docs/ (example: ./videos/my-demo.mp4)
     const projects = [
       {
         phase: "Introduction",
         name: "Introduction of ADAS Prototype project",
         description: "Documenting the journey of building an ADAS-enabled prototype—no fluff, just pure engineering. This series will provide insights into the process and challenges faced along the way.",
         videoUrl: "https://lnkd.in/p/enVnQMBM",
-       },
+        path: "firmware/00_intro",
+        repoLink: "https://github.com/bhagyashree-phulambrikar"
+      },
       {
         phase: "Phase 0 – The Core Hardware Foundation",
         name: "Chassis of prototype vehicle",
         description: "Motor drive tests and basic chassis actuation for early ADAS behavior.",
         videoUrl: "https://lnkd.in/p/e4VJWMJz",
-      },
-      
+        path: "firmware/01_chassis_setup",
+        repoLink: "https://github.com/bhagyashree-phulambrikar"
+      }
     ];
 
     const cards = document.getElementById("cards");
@@ -325,6 +336,24 @@
       return url && !url.startsWith("REPLACE_WITH_VIDEO_URL");
     }
 
+    function isExternalPost(url) {
+      if (!url) return false;
+      return url.includes("lnkd.in") || url.includes("linkedin.com");
+    }
+
+    function handleVideoAction(project) {
+      if (!hasVideo(project.videoUrl)) return;
+
+      // Direct redirection for external platform links like LinkedIn
+      if (isExternalPost(project.videoUrl)) {
+        window.open(project.videoUrl, "_blank", "noopener,noreferrer");
+        return;
+      }
+
+      // Open Modal for embeddable sources (YouTube, direct MP4)
+      openVideoModal(project);
+    }
+
     function createPlayer(url) {
       const yt = normalizeYouTubeUrl(url);
       if (yt) {
@@ -346,11 +375,10 @@
       return null;
     }
 
-    function openVideo(project) {
-      if (!hasVideo(project.videoUrl)) return;
+    function openVideoModal(project) {
       const player = createPlayer(project.videoUrl);
       if (!player) {
-        modalFooter.textContent = "Unsupported video URL. Use YouTube links or .mp4/.webm paths.";
+        window.open(project.videoUrl, "_blank", "noopener,noreferrer");
         return;
       }
       modalTitle.textContent = project.name;
@@ -389,20 +417,23 @@
         card.className = "card";
 
         const videoReady = hasVideo(project.videoUrl);
+        const pathBlock = project.path ? `<p class="path">${project.path}</p>` : '';
+        const repoBtn = project.repoLink ? `<a class="btn secondary" href="${project.repoLink}" target="_blank" rel="noreferrer">Open Docs</a>` : '';
+
         card.innerHTML = `
           <span class="phase">${project.phase}</span>
           <h3 class="title">${project.name}</h3>
           <p class="desc">${project.description}</p>
-          <p class="path">${project.path}</p>
+          ${pathBlock}
           <div class="actions">
-            <button type="button" class="btn play-btn" ${videoReady ? "" : "disabled"} title="${videoReady ? "Open project video" : "Set videoUrl in docs/index.html"}">
-              ${videoReady ? "Play Video" : "Add Video URL"}
+            <button type="button" class="btn play-btn" ${videoReady ? "" : "disabled"} title="${videoReady ? "Watch project video" : "Set videoUrl"}">
+              ${videoReady ? "Watch Video ↗" : "Add Video URL"}
             </button>
-            <a class="btn secondary" href="${project.repoLink}" target="_blank" rel="noreferrer">Open Docs</a>
+            ${repoBtn}
           </div>
         `;
 
-        card.querySelector(".play-btn").addEventListener("click", () => openVideo(project));
+        card.querySelector(".play-btn").addEventListener("click", () => handleVideoAction(project));
         cards.appendChild(card);
       });
     }
